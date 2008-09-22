@@ -17,13 +17,13 @@ Create a Dutch format, with 2 decimals:
 {{{
 SpellerNumberFormat format = new SpellerNumberFormat(new Locale("nl"), 2);
 
-assert "honderddrieëntwintig komma vijfenveertig".equals(123.45);
-assert "honderddrieëntwintig komma nul".equals(123.0);
+assert "honderddrieëntwintig komma vijfenveertig".equals(format.format(123.45));
+assert "honderddrieëntwintig komma nul".equals(format.format(123.0));
 }}}
 
 This creates a format for French, with no decimals:
 {{{
 SpellerNumberFormat format = new SpellerNumberFormat(Locale.FRENCH);
 
-assert "cent vingt-trois".equals(123);
+assert "cent vingt-trois".equals(format.format(123));
 }}}
