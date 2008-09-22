@@ -1,0 +1,6 @@
+#summary Release Checklist
+#labels Phase-Implementation
+
+  * increment version number
+  * create a download (make it featured)
+  * commit javadocs
