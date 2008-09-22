@@ -1,0 +1,115 @@
+<project name="jafl" default="compile" basedir=".">
+
+	<property file="build.properties"/>
+	
+	<property name="dir.src" value="src" />
+	<property name="dir.src.java" value="${dir.src}/java" />
+	<property name="dir.src.test" value="${dir.src}/test" />
+	<property name="dir.src.docs" value="${dir.src}/docs" />
+	<property name="dir.lib" value="lib" />
+	<property name="dir.build" value="build" />
+	<property name="dir.build.classes" value="${dir.build}/classes" />
+	<property name="dir.build.tests" value="${dir.build}/tests" />
+	<property name="dir.docs" value="${dir.build}/docs" />
+	<property name="dir.dist" value="dist" />
+
+	<property name="junit.jar" value="${dir.lib}/junit-4.5.jar" />
+
+	<path id="classpath.common">
+	</path>
+
+	<path id="classpath.test">
+		<pathelement location="${junit.jar}" />
+		<pathelement location="${dir.build.classes}" />
+		<path refid="classpath.common" />
+	</path>
+
+	<target name="clean" description="Destroys all generated files and dirs.">
+		<delete dir="${dir.build}" />
+		<delete dir="${dir.dist}" />
+	</target>
+
+	<target name="prepare">
+		<mkdir dir="${dir.build}" />
+		<mkdir dir="${dir.build.classes}" />
+		<mkdir dir="${dir.build.tests}" />
+		<mkdir dir="${dir.dist}" />
+	</target>
+
+	<target name="compile" depends="prepare" description="Compiles all sources">
+		<javac srcdir="${dir.src.java}" destdir="${dir.build.classes}" debug="on" />
+		<javac srcdir="${dir.src.test}" destdir="${dir.build.tests}" debug="on">
+			<classpath refid="classpath.test" />
+		</javac>
+	</target>
+
+	<target name="test" depends="compile" description="Compiles all sources">
+		<junit printsummary="yes" haltonfailure="no" failureproperty="junit.fail">
+			<classpath>
+				<path refid="classpath.test" />
+				<pathelement location="${dir.build.tests}" />
+			</classpath>
+
+			<batchtest fork="yes">
+				<fileset dir="${dir.src.test}">
+					<include name="**/*Test.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<fail if="junit.fail" message="One or more junit tests failed." />
+	</target>
+	
+	<target name="build" depends="clean,jar,doc"/>
+
+	<target name="dist" depends="build" description="Creates a distributable zip file">
+		<zip destfile="${dir.dist}/${ant.project.name}-${version}.zip">
+			<fileset dir="." includes="COPYING*" />
+			<fileset dir="." includes="build.xml" />
+			<fileset dir="." includes="build.properties" />
+
+			<!-- docs -->
+			<fileset dir="${dir.build}" includes="docs/**" />
+			<zipfileset dir="${dir.src.docs}" prefix="docs" />
+
+			<!-- jar file-->
+			<fileset dir="${dir.build}" includes="*.jar" />
+
+			<!-- dependencies -->
+			<zipfileset dir="${dir.lib}" prefix="lib" />
+
+			<!-- src -->
+			<zipfileset dir="${dir.src}" prefix="src" />
+		</zip>
+	</target>
+
+	<target name="jar" depends="compile">
+		<jar destfile="${dir.build}/${ant.project.name}-${version}.jar" basedir="${dir.build.classes}">
+			<manifest>
+				<!--
+				<attribute name="Built-By" value="${user.name}" />
+				-->
+				<!--
+			    <attribute name="Implementation-Vendor" value="ACME inc."/>
+			    -->
+				<attribute name="Implementation-Title" value="${ant.project.name}" />
+				<attribute name="Implementation-Version" value="1.0.0beta2" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="doc">
+		<javadoc sourcepath="${dir.src.java}" packagenames="org.ungoverned.jafl.*" destdir="${dir.docs}/api" author="true" version="true" use="true" windowtitle="${ant.project.name}-${version} API">
+			<doctitle>
+				<![CDATA[<h1>${ant.project.name}-${version}</h1>]]>
+			</doctitle>
+			<bottom>
+				<![CDATA[<i>Copyright &#169; 2008 original author or authors. All Rights Reserved.</i>]]>
+			</bottom>
+			<!--
+			<link offline="true" href="http://java.sun.com/j2se/1.5.0/docs/api/" packagelistLoc="C:\tmp" />
+			<link href="http://developer.java.sun.com/developer/products/xml/docs/api/" />
+			-->
+		</javadoc>
+</target>
+
+</project>
