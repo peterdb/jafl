@@ -26,6 +26,7 @@ package org.ungoverned.jafl.words;
  * #L%
  */
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Locale;
@@ -51,6 +52,6 @@ public class SpellerTest {
 
     @Test
     public void getSpellerWithUnknownLocaleReturnsDefaultLocale() {
-        assertTrue(Speller.getSpeller(new Locale("zz")).equals(Speller.getSpeller()));
+        assertEquals(Speller.getSpeller(new Locale("zz")), Speller.getSpeller());
     }
 }
