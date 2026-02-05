@@ -42,16 +42,16 @@
                     <inceptionYear>2008</inceptionYear>
                     <licenseFile>${basedir}/LICENSE</licenseFile>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>update-file-header</id>
-                        <goals>
-                            <goal>update-file-header</goal>
-                            <goal>update-project-license</goal>
-                        </goals>
-                        <phase>process-sources</phase>
-                    </execution>
-                </executions>
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>update-file-header</id>-->
+<!--                        <goals>-->
+<!--                            <goal>update-file-header</goal>-->
+<!--                            <goal>update-project-license</goal>-->
+<!--                        </goals>-->
+<!--                        <phase>process-sources</phase>-->
+<!--                    </execution>-->
+<!--                </executions>-->
             </plugin>
         </plugins>
     </build>
