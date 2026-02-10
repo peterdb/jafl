@@ -1,10 +1,10 @@
-package org.ungoverned.jafl.words;
+package io.github.jafl.words.impl;
 
 /*-
  * #%L
  * Java Advanced Formatting Library (JAFL)
  * %%
- * Copyright (C) 2008 - 2026 Peter De Bruycker
+ * Copyright (C) 2008 - 2026 Java Advanced Formatting Library (JAFL) Contributors
  * %%
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,32 +26,33 @@ package org.ungoverned.jafl.words;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
+import java.util.ListResourceBundle;
 import java.util.Locale;
-
-import org.junit.Test;
-import org.ungoverned.jafl.words.impl.Speller;
-import org.ungoverned.jafl.words.impl.Speller_en;
-import org.ungoverned.jafl.words.impl.Speller_fr;
-import org.ungoverned.jafl.words.impl.Speller_nl;
+import java.util.ResourceBundle;
 
 /**
- * Test case for testing {@link Locale} specific loading of {@link Speller}s
+ * Strategy for spelling numbers given a precision.
+ * <p>
+ * Extends from {@link ListResourceBundle} so we can load {@link Locale}-specific {@link Speller} implementations.
+ * 
+ * @see #spell(Number, int)
  * 
  * @author Peter De Bruycker
  */
-public class SpellerTest {
-    @Test
-    public void getSpeller() {
-        assertTrue(Speller.getSpeller(Locale.FRANCE) instanceof Speller_fr);
-        assertTrue(Speller.getSpeller(Locale.ENGLISH) instanceof Speller_en);
-        assertTrue(Speller.getSpeller(new Locale("nl")) instanceof Speller_nl);
+public abstract class Speller extends ListResourceBundle {
+
+    public static Speller getSpeller() {
+        return getSpeller(Locale.getDefault());
     }
 
-    @Test
-    public void getSpellerWithUnknownLocaleReturnsDefaultLocale() {
-        assertEquals(Speller.getSpeller(new Locale("zz")), Speller.getSpeller());
+    public static Speller getSpeller(Locale locale) {
+        return (Speller) ResourceBundle.getBundle(Speller.class.getName(), locale);
+    }
+
+    public abstract String spell(Number number, int precision);
+
+    @Override
+    protected final Object[][] getContents() {
+        return null;
     }
 }

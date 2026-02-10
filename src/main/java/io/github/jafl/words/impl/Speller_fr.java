@@ -1,10 +1,10 @@
-package org.ungoverned.jafl.words.impl;
+package io.github.jafl.words.impl;
 
 /*-
  * #%L
  * Java Advanced Formatting Library (JAFL)
  * %%
- * Copyright (C) 2008 - 2026 Peter De Bruycker
+ * Copyright (C) 2008 - 2026 Java Advanced Formatting Library (JAFL) Contributors
  * %%
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
